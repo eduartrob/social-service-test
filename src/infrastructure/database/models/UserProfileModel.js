@@ -47,21 +47,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       comment: 'Fecha de nacimiento'
     },
-    gender: {
-      type: DataTypes.ENUM('male', 'female', 'other', 'prefer_not_to_say'),
-      allowNull: true,
-      comment: 'Género'
-    },
-    privacy_settings: {
-      type: DataTypes.JSON,
-      allowNull: true,
-      comment: 'Configuraciones de privacidad'
-    },
-    preferences: {
-      type: DataTypes.JSON,
-      allowNull: true,
-      comment: 'Preferencias del usuario'
-    },
+    // gender: {
+    //   type: DataTypes.ENUM('male', 'female', 'other', 'prefer_not_to_say'),
+    //   allowNull: true,
+    //   comment: 'Género'
+    // },
+    // privacy_settings: {
+    //   type: DataTypes.JSON,
+    //   allowNull: true,
+    //   comment: 'Configuraciones de privacidad'
+    // },
+    // preferences: {
+    //   type: DataTypes.JSON,
+    //   allowNull: true,
+    //   comment: 'Preferencias del usuario'
+    // },
     followers_count: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -92,11 +92,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true,
       comment: 'Cuenta activa'
     },
-    last_active_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      comment: 'Última actividad'
-    }
+    // last_active_at: {
+    //   type: DataTypes.DATE,
+    //   allowNull: true,
+    //   comment: 'Última actividad'
+    // }
   }, {
     tableName: 'user_profiles',
     timestamps: true,

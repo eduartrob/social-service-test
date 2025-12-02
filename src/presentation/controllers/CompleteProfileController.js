@@ -17,11 +17,11 @@ class CompleteProfileController {
   async getCompleteProfile(req, res) {
     try {
       const userId = req.user.id; // Del JWT token
-      
+
       console.log('📋 GetCompleteProfile - User:', userId);
 
       const completeProfile = await CompleteProfileModel.findOne({
-            attributes: ['user_id', 'display_name', 'avatar_url']
+        attributes: ['user_id', 'display_name', 'avatar_url']
       });
 
       if (!completeProfile) {
@@ -65,7 +65,7 @@ class CompleteProfileController {
   async getUserCompleteProfile(req, res) {
     try {
       const { userId } = req.params;
-      
+
       console.log('👤 GetUserCompleteProfile - Target User:', userId);
 
       const completeProfile = await CompleteProfileModel.findOne({
@@ -131,14 +131,14 @@ class CompleteProfileController {
   async createCompleteProfile(req, res) {
     try {
       const userId = req.user.id;
-      const { 
-        full_name, 
-        age, 
-        bio, 
-        hobbies, 
-        location, 
-        website, 
-        phone 
+      const {
+        full_name,
+        age,
+        bio,
+        hobbies,
+        location,
+        website,
+        phone
       } = req.body;
 
       console.log('📝 CreateCompleteProfile - User:', userId, 'Data:', req.body);
@@ -147,7 +147,7 @@ class CompleteProfileController {
       let profilePictureUrl = null;
       if (req.files && req.files.length > 0) {
         const imageFile = req.files[0];
-        profilePictureUrl = `http://54.146.237.63:3002/uploads/publications/${imageFile.filename}`;
+        profilePictureUrl = `http://3.213.101.39:3002/uploads/publications/${imageFile.filename}`;
         console.log('✅ Foto de perfil guardada:', profilePictureUrl);
       }
 
@@ -217,14 +217,14 @@ class CompleteProfileController {
   async updateCompleteProfile(req, res) {
     try {
       const userId = req.user.id;
-      const { 
-        full_name, 
-        age, 
-        bio, 
-        hobbies, 
-        location, 
-        website, 
-        phone 
+      const {
+        full_name,
+        age,
+        bio,
+        hobbies,
+        location,
+        website,
+        phone
       } = req.body;
 
       console.log('✏️ UpdateCompleteProfile - User:', userId, 'Data:', req.body);
@@ -238,7 +238,7 @@ class CompleteProfileController {
       let profilePictureUrl = completeProfile?.profile_picture || null;
       if (req.files && req.files.length > 0) {
         const imageFile = req.files[0];
-        profilePictureUrl = `http://54.146.237.63:3002/uploads/publications/${imageFile.filename}`;
+        profilePictureUrl = `http://3.213.101.39:3002/uploads/publications/${imageFile.filename}`;
         console.log('✅ Nueva foto de perfil guardada:', profilePictureUrl);
       }
 
@@ -275,7 +275,7 @@ class CompleteProfileController {
             {
               model: UserProfileModel,
               as: 'user',
-            attributes: ['user_id', 'display_name', 'avatar_url']
+              attributes: ['user_id', 'display_name', 'avatar_url']
             }
           ]
         });
@@ -363,7 +363,7 @@ class CompleteProfileController {
    */
   _handleError(res, error) {
     console.error('Error en CompleteProfileController:', error.message);
-    
+
     if (error.name === 'SequelizeValidationError') {
       return res.status(400).json({
         success: false,
