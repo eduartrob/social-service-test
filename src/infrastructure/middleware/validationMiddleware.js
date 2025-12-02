@@ -24,23 +24,23 @@ const validateCreatePublication = [
     .isLength({ min: 1, max: 5000 })
     .withMessage('El contenido debe tener entre 1 y 5000 caracteres')
     .trim(),
-  
+
   body('type')
     .optional()
     .isIn(['text', 'image', 'video', 'text_image'])
     .withMessage('Tipo de publicación inválido'),
-  
+
   body('visibility')
     .optional()
     .isIn(['public', 'private', 'friends'])
     .withMessage('Visibilidad inválida'),
-  
+
   body('location')
     .optional()
     .isLength({ max: 255 })
     .withMessage('La ubicación no puede exceder 255 caracteres')
     .trim(),
-  
+
   body('tags')
     .optional()
     .custom((value) => {
@@ -56,7 +56,7 @@ const validateCreatePublication = [
       }
       throw new Error('Tags debe ser un array con máximo 10 elementos');
     }),
-  
+
   handleValidationErrors
 ];
 
@@ -66,18 +66,18 @@ const validateUpdatePublication = [
     .isLength({ min: 1, max: 5000 })
     .withMessage('El contenido debe tener entre 1 y 5000 caracteres')
     .trim(),
-  
+
   body('visibility')
     .optional()
     .isIn(['public', 'private', 'friends'])
     .withMessage('Visibilidad inválida'),
-  
+
   body('location')
     .optional()
     .isLength({ max: 255 })
     .withMessage('La ubicación no puede exceder 255 caracteres')
     .trim(),
-  
+
   body('tags')
     .optional()
     .custom((value) => {
@@ -93,7 +93,7 @@ const validateUpdatePublication = [
       }
       throw new Error('Tags debe ser un array con máximo 10 elementos');
     }),
-  
+
   handleValidationErrors
 ];
 
@@ -102,27 +102,27 @@ const validateGetPublications = [
     .optional()
     .isInt({ min: 1 })
     .withMessage('La página debe ser un número entero mayor a 0'),
-  
+
   query('limit')
     .optional()
     .isInt({ min: 1, max: 50 })
     .withMessage('El límite debe ser entre 1 y 50'),
-  
+
   query('type')
     .optional()
     .isIn(['text', 'image', 'video', 'text_image'])
     .withMessage('Tipo de publicación inválido'),
-  
+
   query('visibility')
     .optional()
     .isIn(['public', 'private', 'friends'])
     .withMessage('Visibilidad inválida'),
-  
+
   query('userId')
     .optional()
     .isUUID(4)
     .withMessage('ID de usuario inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -133,7 +133,7 @@ const validateUpdateProfile = [
     .isLength({ min: 1, max: 500 })
     .withMessage('La biografía debe tener entre 1 y 500 caracteres')
     .trim(),
-  
+
   body('interests')
     .optional()
     .isArray()
@@ -144,11 +144,11 @@ const validateUpdateProfile = [
       }
       return true;
     }),
-  
+
   body('interests.*')
     .isLength({ min: 1, max: 50 })
     .withMessage('Cada interés debe tener entre 1 y 50 caracteres'),
-  
+
   handleValidationErrors
 ];
 
@@ -157,7 +157,7 @@ const validateAddFriend = [
     .notEmpty()
     .isUUID(4)
     .withMessage('ID de amigo inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -166,7 +166,7 @@ const validateBlockUser = [
     .notEmpty()
     .isUUID(4)
     .withMessage('ID de usuario a bloquear inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -177,12 +177,12 @@ const validateCreateComment = [
     .isLength({ min: 1, max: 2000 })
     .withMessage('El comentario debe tener entre 1 y 2000 caracteres')
     .trim(),
-  
+
   body('parentId')
     .optional()
     .isUUID(4)
     .withMessage('ID del comentario padre inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -192,7 +192,7 @@ const validateUpdateComment = [
     .isLength({ min: 1, max: 2000 })
     .withMessage('El comentario debe tener entre 1 y 2000 caracteres')
     .trim(),
-  
+
   handleValidationErrors
 ];
 
@@ -201,12 +201,12 @@ const validateGetComments = [
     .optional()
     .isInt({ min: 1 })
     .withMessage('La página debe ser un número entero mayor a 0'),
-  
+
   query('limit')
     .optional()
     .isInt({ min: 1, max: 50 })
     .withMessage('El límite debe ser entre 1 y 50'),
-  
+
   handleValidationErrors
 ];
 
@@ -216,7 +216,7 @@ const validateLike = [
     .optional()
     .isIn(['like', 'dislike', 'love', 'angry', 'sad', 'wow'])
     .withMessage('Tipo de reacción inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -225,17 +225,17 @@ const validateGetLikes = [
     .optional()
     .isInt({ min: 1 })
     .withMessage('La página debe ser un número entero mayor a 0'),
-  
+
   query('limit')
     .optional()
     .isInt({ min: 1, max: 50 })
     .withMessage('El límite debe ser entre 1 y 50'),
-  
+
   query('type')
     .optional()
     .isIn(['like', 'dislike', 'love', 'angry', 'sad', 'wow'])
     .withMessage('Tipo de reacción inválido'),
-  
+
   handleValidationErrors
 ];
 
@@ -267,29 +267,29 @@ const validateCommunityCreation = [
     .isLength({ min: 3, max: 100 })
     .withMessage('El nombre de la comunidad debe tener entre 3 y 100 caracteres')
     .trim(),
-  
+
   body('description')
     .notEmpty()
     .isLength({ min: 10, max: 500 })
     .withMessage('La descripción debe tener entre 10 y 500 caracteres')
     .trim(),
-  
+
   body('category')
     .notEmpty()
     .isLength({ min: 1, max: 50 })
     .withMessage('La categoría es requerida y no puede exceder 50 caracteres')
     .trim(),
-  
+
   body('tags')
     .optional()
     .isLength({ max: 500 })
     .withMessage('Los tags no pueden exceder 500 caracteres'),
-  
+
   body('privacy')
     .optional()
     .isIn(['public', 'private'])
     .withMessage('La privacidad debe ser public o private'),
-  
+
   handleValidationErrors
 ];
 
@@ -299,29 +299,29 @@ const validateCommunityUpdate = [
     .isLength({ min: 3, max: 100 })
     .withMessage('El nombre de la comunidad debe tener entre 3 y 100 caracteres')
     .trim(),
-  
+
   body('description')
     .optional()
     .isLength({ min: 10, max: 500 })
     .withMessage('La descripción debe tener entre 10 y 500 caracteres')
     .trim(),
-  
+
   body('category')
     .optional()
     .isLength({ min: 1, max: 50 })
     .withMessage('La categoría no puede exceder 50 caracteres')
     .trim(),
-  
+
   body('tags')
     .optional()
     .isLength({ max: 500 })
     .withMessage('Los tags no pueden exceder 500 caracteres'),
-  
+
   body('privacy')
     .optional()
     .isIn(['public', 'private'])
     .withMessage('La privacidad debe ser public o private'),
-  
+
   handleValidationErrors
 ];
 
@@ -331,89 +331,101 @@ const validatePreferences = [
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Deportes debe ser un número entre 1 y 10'),
-  
+
   body('Arte')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Arte debe ser un número entre 1 y 10'),
-  
+
   body('Música')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Música debe ser un número entre 1 y 10'),
-  
+
   body('Tecnología')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Tecnología debe ser un número entre 1 y 10'),
-  
+
   body('Ciencia')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Ciencia debe ser un número entre 1 y 10'),
-  
+
   body('Viajes')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Viajes debe ser un número entre 1 y 10'),
-  
+
   body('Cocina')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Cocina debe ser un número entre 1 y 10'),
-  
+
   body('Lectura')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Lectura debe ser un número entre 1 y 10'),
-  
+
   body('Entretenimiento')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Entretenimiento debe ser un número entre 1 y 10'),
-  
+
   body('Naturaleza')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Naturaleza debe ser un número entre 1 y 10'),
-  
+
   body('Historia')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Historia debe ser un número entre 1 y 10'),
-  
+
   body('Moda')
     .optional()
     .isInt({ min: 1, max: 10 })
     .withMessage('Moda debe ser un número entre 1 y 10'),
-  
+
   handleValidationErrors
 ];
 
 // Validaciones para Complete Profile
 const validateCompleteProfile = [
+  body('displayName')
+    .optional()
+    .isLength({ min: 8, max: 100 })
+    .withMessage('El nombre completo debe tener entre 8 y 100 caracteres')
+    .trim(),
+
   body('full_name')
-    .notEmpty()
+    .optional()
     .isLength({ min: 2, max: 100 })
     .withMessage('El nombre completo debe tener entre 2 y 100 caracteres')
     .trim(),
-  
+
   body('age')
+    .optional()
     .isInt({ min: 13, max: 120 })
     .withMessage('La edad debe ser un número entre 13 y 120'),
-  
+
+  body('birthDate')
+    .optional()
+    .isISO8601()
+    .withMessage('La fecha de nacimiento debe ser válida'),
+
   body('bio')
     .optional()
     .isLength({ max: 500 })
     .withMessage('La biografía no puede exceder 500 caracteres')
     .trim(),
-  
+
   body('hobbies')
     .optional()
     .isLength({ max: 255 })
     .withMessage('Los hobbies no pueden exceder 255 caracteres')
     .trim(),
-  
+
   handleValidationErrors
 ];
 
@@ -423,24 +435,24 @@ const validateCompleteProfileUpdate = [
     .isLength({ min: 2, max: 100 })
     .withMessage('El nombre completo debe tener entre 2 y 100 caracteres')
     .trim(),
-  
+
   body('age')
     .optional()
     .isInt({ min: 13, max: 120 })
     .withMessage('La edad debe ser un número entre 13 y 120'),
-  
+
   body('bio')
     .optional()
     .isLength({ max: 500 })
     .withMessage('La biografía no puede exceder 500 caracteres')
     .trim(),
-  
+
   body('hobbies')
     .optional()
     .isLength({ max: 255 })
     .withMessage('Los hobbies no pueden exceder 255 caracteres')
     .trim(),
-  
+
   handleValidationErrors
 ];
 
@@ -450,7 +462,7 @@ const validateFriendshipRequest = [
     .notEmpty()
     .isUUID(4)
     .withMessage('friend_id debe ser un UUID válido'),
-  
+
   handleValidationErrors
 ];
 
@@ -459,7 +471,7 @@ const validateBlockUserRequest = [
     .notEmpty()
     .isUUID(4)
     .withMessage('blocked_id debe ser un UUID válido'),
-  
+
   handleValidationErrors
 ];
 
