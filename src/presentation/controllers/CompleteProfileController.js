@@ -153,7 +153,7 @@ class CompleteProfileController {
         console.log('✅ Avatar from Cloudinary:', avatarUrl);
       } else if (req.files && req.files.length > 0) {
         const imageFile = req.files[0];
-        profilePictureUrl = `http://54.146.237.63:3002/uploads/publications/${imageFile.filename}`;
+        profilePictureUrl = `http://3.213.101.39:3002/uploads/publications/${imageFile.filename}`;
         avatarUrl = profilePictureUrl;
         console.log('✅ Foto de perfil guardada:', profilePictureUrl);
       }

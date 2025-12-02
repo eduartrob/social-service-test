@@ -111,41 +111,41 @@ class PublicationController {
 
       // Extraer datos del body
       const { content, type, visibility, location, tags } = req.body;
-      
+
       // Procesar archivos subidos
       const mediaUrls = [];
       if (req.files && req.files.length > 0) {
-          console.log(`📤 Procesando ${req.files.length} archivo(s)...`);
-          
-          req.files.forEach((file, index) => {
-              // Construir URL pública del archivo
-              const fileUrl = `http://54.146.237.63:3002/uploads/publications/${file.filename}`;
-              mediaUrls.push(fileUrl);
-              console.log(`✅ Archivo ${index + 1} guardado:`, fileUrl);
-          });
+        console.log(`📤 Procesando ${req.files.length} archivo(s)...`);
+
+        req.files.forEach((file, index) => {
+          // Construir URL pública del archivo
+          const fileUrl = `http://3.213.101.39:3002/uploads/publications/${file.filename}`;
+          mediaUrls.push(fileUrl);
+          console.log(`✅ Archivo ${index + 1} guardado:`, fileUrl);
+        });
       }
 
       // Parsear tags si viene como string
       let parsedTags = [];
       if (tags) {
-          try {
-              parsedTags = Array.isArray(tags) ? tags : JSON.parse(tags);
-          } catch (e) {
-              console.log('⚠️ Error parseando tags, usando array vacío');
-          }
+        try {
+          parsedTags = Array.isArray(tags) ? tags : JSON.parse(tags);
+        } catch (e) {
+          console.log('⚠️ Error parseando tags, usando array vacío');
+        }
       }
 
       // Preparar datos para el UseCase
       const publicationData = {
-          authorId: req.user.id,
-          text: content || '',
-          content: content || '',
-          type: type || 'text',
-          visibility: visibility || 'public',
-          location: location || null,
-          tags: parsedTags,
-          files: req.files || [],
-          mediaUrls: mediaUrls
+        authorId: req.user.id,
+        text: content || '',
+        content: content || '',
+        type: type || 'text',
+        visibility: visibility || 'public',
+        location: location || null,
+        tags: parsedTags,
+        files: req.files || [],
+        mediaUrls: mediaUrls
       };
 
       console.log('📤 Datos preparados para UseCase:', publicationData);
@@ -156,16 +156,16 @@ class PublicationController {
       console.log('✅ Respuesta final del controlador:', publication);
 
       res.status(201).json({
-          success: true,
-          message: 'Publicación creada exitosamente',
-          data: publication
+        success: true,
+        message: 'Publicación creada exitosamente',
+        data: publication
       });
     } catch (error) {
       console.error('❌ Error creando publicación:', error);
       res.status(500).json({
-          success: false,
-          message: 'Error al crear publicación',
-          error: error.message
+        success: false,
+        message: 'Error al crear publicación',
+        error: error.message
       });
     }
   }
@@ -335,7 +335,7 @@ class PublicationController {
    */
   _handleError(res, error) {
     console.error('Error en PublicationController:', error.message);
-    
+
     // Mapear errores de dominio a códigos HTTP
     if (error.message.includes('no encontrado') || error.message.includes('not found')) {
       return res.status(404).json({
@@ -343,14 +343,14 @@ class PublicationController {
         message: error.message
       });
     }
-    
+
     if (error.message.includes('no tienes permisos') || error.message.includes('unauthorized')) {
       return res.status(403).json({
         success: false,
         message: error.message
       });
     }
-    
+
     if (error.message.includes('requerido') || error.message.includes('inválido')) {
       return res.status(400).json({
         success: false,
