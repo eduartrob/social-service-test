@@ -19,11 +19,27 @@ cd "$SCRIPT_DIR"
 
 # --- 1. VERIFICAR MYSQL ---
 echo -e "${YELLOW}Paso 1: Verificando MySQL...${NC}"
+
 if ! command -v mysql &> /dev/null; then
-    echo -e "${RED}❌ MySQL no encontrado. Por favor instálalo.${NC}"
-    exit 1
+    echo -e "${YELLOW}MySQL no encontrado. Instalando MariaDB Server...${NC}"
+    
+    # Actualizar repositorios
+    sudo apt-get update
+    
+    # Instalar MariaDB
+    if sudo apt-get install -y mariadb-server mariadb-client; then
+        echo -e "${GREEN}✅ MariaDB instalado correctamente.${NC}"
+        
+        # Asegurar que el servicio esté corriendo
+        sudo systemctl start mariadb
+        sudo systemctl enable mariadb
+    else
+        echo -e "${RED}❌ Error instalando MariaDB.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}✅ MySQL/MariaDB ya está instalado.${NC}"
 fi
-echo -e "${GREEN}✅ MySQL encontrado.${NC}"
 
 # --- 2. CONFIGURAR BASE DE DATOS ---
 echo -e "${YELLOW}Paso 2: Configurando Base de Datos...${NC}"
