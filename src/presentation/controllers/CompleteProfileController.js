@@ -125,29 +125,36 @@ class CompleteProfileController {
     }
   }
 
-  /**
-   * Crear perfil completo para un usuario
-   */
   async createCompleteProfile(req, res) {
     try {
       const userId = req.user.id;
       const {
+        displayName,
         full_name,
         age,
         bio,
         hobbies,
         location,
         website,
-        phone
+        phone,
+        birthDate
       } = req.body;
 
       console.log('📝 CreateCompleteProfile - User:', userId, 'Data:', req.body);
 
       // Procesar foto de perfil si se subió
       let profilePictureUrl = null;
-      if (req.files && req.files.length > 0) {
+      let avatarUrl = null;
+
+      if (req.avatarUrl) {
+        // Avatar from Cloudinary middleware
+        avatarUrl = req.avatarUrl;
+        profilePictureUrl = req.avatarUrl;
+        console.log('✅ Avatar from Cloudinary:', avatarUrl);
+      } else if (req.files && req.files.length > 0) {
         const imageFile = req.files[0];
-        profilePictureUrl = `http://3.213.101.39:3002/uploads/publications/${imageFile.filename}`;
+        profilePictureUrl = `http://54.146.237.63:3002/uploads/publications/${imageFile.filename}`;
+        avatarUrl = profilePictureUrl;
         console.log('✅ Foto de perfil guardada:', profilePictureUrl);
       }
 
@@ -162,22 +169,46 @@ class CompleteProfileController {
       }
 
       // Verificar si ya existe un perfil completo
-      const existingProfile = await CompleteProfileModel.findOne({
+      const existingCompleteProfile = await CompleteProfileModel.findOne({
         where: { user_id: userId }
       });
 
-      if (existingProfile) {
+      if (existingCompleteProfile) {
         return res.status(400).json({
           success: false,
           message: 'Ya tienes un perfil completo configurado. Use PUT para actualizar.'
         });
       }
 
+      // ✅ ALSO CREATE USER PROFILE
+      // Check if user_profile exists
+      const existingUserProfile = await UserProfileModel.findOne({
+        where: { user_id: userId }
+      });
+
+      if (!existingUserProfile) {
+        // Create user_profile if it doesn't exist
+        await UserProfileModel.create({
+          id: uuidv4(),
+          user_id: userId,
+          display_name: displayName || full_name || 'Usuario',
+          bio: bio || null,
+          avatar_url: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || full_name || 'Usuario')}&size=200&background=random`,
+          birth_date: birthDate || null,
+          followers_count: 0,
+          following_count: 0,
+          posts_count: 0,
+          is_verified: false,
+          is_active: true
+        });
+        console.log('✅ User profile created for user:', userId);
+      }
+
       // Crear nuevo perfil completo
       const completeProfile = await CompleteProfileModel.create({
         id: uuidv4(),
         user_id: userId,
-        full_name: fullName,
+        full_name: displayName || full_name,
         age: age ? parseInt(age) : null,
         profile_picture: profilePictureUrl,
         bio: bio || null,
